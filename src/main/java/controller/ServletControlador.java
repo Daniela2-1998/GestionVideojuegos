@@ -4,6 +4,8 @@ import data.JuegosDAO;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,9 +26,12 @@ public class ServletControlador extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
         String accion = req.getParameter("accion");
         if(accion != null){
-            switch (accion){
+            switch (accion) {
                 case "editar":
                     editarJuego(req, res);
+                    break;
+                case "eliminar":
+                    eliminarJuego(req, res);
                     break;
                 default:
                     accionDefault(req, res);
@@ -40,14 +45,14 @@ public class ServletControlador extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
         String accion = req.getParameter("accion");
-        if(accion != null){
-            switch (accion){
+       if (accion != null) {
+            switch (accion) {
                 case "insertar":
                     insertarJuego(req, res);
-                break;
+                    break;
                 case "modificar":
                     modificarJuego(req, res);
-                 break;
+                    break;
                 default:
                     accionDefault(req, res);
                     break;
@@ -58,7 +63,7 @@ public class ServletControlador extends HttpServlet {
     }
     
     // ACCIÓN DEFAULT
-    private void accionDefault(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+    private void accionDefault(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         try {
             List<Juegos> juegos = new JuegosDAO().seleccionar();
             juegos.forEach(System.out::println);
@@ -68,11 +73,14 @@ public class ServletControlador extends HttpServlet {
             sesion.setAttribute("juegos", juegos);
             sesion.setAttribute("cantidadJuegos", juegos.size());
             sesion.setAttribute("precioTotal", calcularPrecio(juegos));
+            
+            System.out.println(sesion);
+            
             res.sendRedirect("juegos.jsp");
-               
         } catch (SQLException ex) {
             ex.printStackTrace(System.out);
-        } 
+        }
+
     }
     
     // INSERTAR JUEGO
@@ -93,7 +101,7 @@ public class ServletControlador extends HttpServlet {
     
     // EDITAR JUEGO
     private void editarJuego(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
-        int idjuego = Integer.parseInt(req.getParameter("idjuego"));
+       int idjuego = Integer.parseInt(req.getParameter("idjuego"));
        
        Juegos juegos= new JuegosDAO().seleccionarPorID(idjuego);
        req.setAttribute("juegos", juegos);
@@ -102,8 +110,28 @@ public class ServletControlador extends HttpServlet {
     
     // MODIFICAR JUEGO
     private void modificarJuego(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
+        int idjuego = Integer.parseInt(req.getParameter("idjuego"));
+        String nombre = req.getParameter("nombre");
+        String genero = req.getParameter("genero");
+        String plataforma = req.getParameter("plataforma");
+        int unidades = Integer.parseInt(req.getParameter("unidades"));
+        double precio = Double.parseDouble(req.getParameter("precio"));
+
+        Juegos juegoMod = new Juegos(idjuego, nombre, genero, plataforma, unidades, precio);
+        int registrosMod = new JuegosDAO().actualizar(juegoMod);
+        
+        System.out.println("Registros modificados: "+ registrosMod );
         accionDefault(req, res);
     }
+    
+    // ELIMINAR
+    private void eliminarJuego(HttpServletRequest req, HttpServletResponse res)throws ServletException, IOException{
+        int idjuego = Integer.parseInt(req.getParameter("idjuego"));
+        int regBorrados = new JuegosDAO().eliminar(idjuego);
+        System.out.println("Registros eliminados: "+ regBorrados);
+        accionDefault(req, res);
+    }
+
     
     
     private double calcularPrecio(List<Juegos> juegos){

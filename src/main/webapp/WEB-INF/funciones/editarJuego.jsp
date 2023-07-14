@@ -3,18 +3,17 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <link rel="stylesheet" href="/css/inicio-styless.css">
+        <link rel="stylesheet" href="css/styless.css">
         
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
         <script src="https://kit.fontawesome.com/382381b436.js" crossorigin="anonymous"></script>
+        
         <title>Editar juego</title>
     </head>
     <body>
         <jsp:include page="../seccioncomun/cabecera.jsp"/>
         
-        <form action="${pageContext.request.contextPath}
-              /servletControlador?accion=modificar&idjuego=${juegos.idjuego}" 
-              method="POST" class="was-validated">
+         <form action="${pageContext.request.contextPath}/servletControlador?accion=modificar&idjuego=${juegos.idjuego}" method="POST" class="was-validated">
             <jsp:include page="../seccioncomun/botonesNavegacionEditar.jsp"/>
             <section id="details">
                 <div class="container">

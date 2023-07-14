@@ -27,7 +27,7 @@
                         <tbody>   
                             <c:forEach var="juegos" items="${juegos}" varStatus="status">
                                 <tr>
-                                    <td>${juegos.idjuego}</td>
+                                    <td>${status.count}</td>
                                     <td>${juegos.nombre}</td>
                                     <td>${juegos.genero}</td>
                                     <td>${juegos.plataforma}</td>

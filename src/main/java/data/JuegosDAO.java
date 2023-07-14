@@ -21,7 +21,7 @@ public class JuegosDAO {
             + "idjuego = ?";
     private static final String SQL_INSERT = "INSERT INTO juegos (nombre, genero, "
             + "plataforma, unidades, precio) VALUES (?, ?, ?, ?, ?)";
-    private static final String SQL_UPDATE = "UPDATE libros SET nombre = ?, "
+    private static final String SQL_UPDATE = "UPDATE juegos SET nombre = ?, "
             + "genero = ?, plataforma = ?, unidades = ?, precio = ? "
             + "WHERE idjuego = ?";
     private static final String SQL_DELETE = "DELETE FROM juegos WHERE idjuego = ?";
@@ -113,6 +113,7 @@ public class JuegosDAO {
             pst.setString(3, juegos.getPlataforma());
             pst.setInt(4, juegos.getUnidades());
             pst.setDouble(5, juegos.getPrecio());
+            pst.setInt(6, juegos.getIdjuego());
 
             registrosMod = pst.executeUpdate();
 
@@ -169,7 +170,7 @@ public class JuegosDAO {
             rs = pst.executeQuery();
             
             while(rs.next()){
-                int idjuego = rs.getInt("idjuego");
+                int idjuego = rs.getInt(1);
                 String nombre = rs.getString("nombre");
                 String genero = rs.getString("genero");
                 String plataforma = rs.getString("plataforma");

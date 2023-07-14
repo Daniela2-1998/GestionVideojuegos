@@ -15,8 +15,7 @@
             </div>
             
             <div class="col-md-3">
-                <a href="${pageContext.request.contextPath}
-                   /servletControlador?accion=eliminar&idCD=${juegos.idJuego}" 
+                <a href="${pageContext.request.contextPath}/servletControlador?accion=eliminar&idjuego=${juegos.idjuego}" 
                    class="btn btn-danger btn-block">
                     <i class="fas fa-trash"></i>
                     Eliminar de stock
